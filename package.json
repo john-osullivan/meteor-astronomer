@@ -1,0 +1,19 @@
+{
+  "name": "meteor-astronomer",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^1.2.0",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-batch": "^1.0.5",
+    "gulp-plumber": "^1.0.1",
+    "gulp-watch": "^4.2.4"
+  }
+}
