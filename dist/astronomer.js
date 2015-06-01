@@ -8,11 +8,11 @@ Meteor.startup(function () {
   if (initalizeAnalyticsjs()) {
     if (typeof Meteor.user !== "undefined") {
       setupIdentify();
-      setupRouteTracking();
-      setupMethodTracking();
     } else {
-      console.warn("Meteor accounts not detected, skipping auto event detection.");
+      console.warn("Meteor accounts not detected, all events will be anonymous.");
     }
+    setupRouteTracking();
+    setupMethodTracking();
   } else {
     console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
   }
@@ -23,20 +23,17 @@ Meteor.startup(function () {
  * @returns {Boolean} If the integration was able to initialize.
  */
 function initalizeAnalyticsjs() {
-  var ret = false;
   var settings = (Meteor.settings || {})["public"] || {};
   var accessKeyId = (settings.astronomer || {}).accessKeyId;
   var secretAccessKey = (settings.astronomer || {}).secretAccessKey;
   if (accessKeyId && secretAccessKey) {
-    analytics.initialize({
+    return analytics.initialize({
       "astronomer": {
         "accessKeyId": accessKeyId,
         "secretAccessKey": secretAccessKey
       }
     });
-    ret = true;
   }
-  return ret;
 }
 
 /**
@@ -52,33 +49,54 @@ function setupIdentify() {
 }
 
 /**
+ * Take a source object and extend it with session keys.
+ * @returns {Object} The new properties object.
+ */
+function createProperties() {
+  var obj = arguments[0] === undefined ? {} : arguments[0];
+
+  return _.extend(obj, { session: Session.keys });
+}
+
+/**
  * Detect the router and hook in to run analytics.page.
  */
 function setupRouteTracking() {
+
+  function page(pageName) {
+    var properties = arguments[1] === undefined ? {} : arguments[1];
+
+    analytics.page(pageName, createProperties(properties));
+  }
+
   if (typeof Router !== "undefined") {
     /** Setup Iron Router */
     Router.onRun(function () {
       var _this = this;
 
       /** Build properties to pass along with page */
-      var properties = {};
+      var routeParams = {};
       var keys = _.keys(this.params);
       _.each(keys, function (key) {
-        properties[key] = _this.params[key];
+        routeParams[key] = _this.params[key];
       });
 
       /** Get the page name */
       var pageName = this.route.getName() || "Home";
 
-      /** Send the page with route params */
-      analytics.page(pageName, properties);
-      this.next();"";
+      /** Send the page view with properties */
+      page(pageName, { routeParams: routeParams });
+      this.next();
     });
   } else if (typeof FlowRouter !== "undefined") {
     /** Setup Flow Router */
     FlowRouter.middleware(function (path, next) {
+
+      /** Get the page name */
       var pageName = path !== "/" ? path : "Home";
-      analytics.page(pageName);
+
+      /** Send the page view with properties */
+      page(pageName);
       next();
     });
   }
@@ -91,7 +109,7 @@ function setupRouteTracking() {
  * throw an error.
  */
 function setupMethodTracking() {
-  Meteor.connection.apply = _.wrap(Meteor.connection.apply, function (func, name, args, _x, callback) {
+  Meteor.connection.apply = _.wrap(Meteor.connection.apply, function (func, name, args, _x3, callback) {
     var options = arguments[3] === undefined ? {} : arguments[3];
 
     if (typeof options === "function") {
@@ -100,7 +118,10 @@ function setupMethodTracking() {
     }
 
     var track = function track(err, res) {
-      if (!err) analytics.track("Called " + name + " Method", { args: args, res: res });
+      if (!err) {
+        var properties = createProperties({ args: args, res: res });
+        analytics.track("Called " + name + " Method", properties);
+      }
     };
 
     if (callback) {
