@@ -55,12 +55,23 @@ function setupIdentify() {
  */
 function setupRouteTracking() {
   if (typeof Router !== "undefined") {
-    Router.onBeforeAction(function() {
+    /** Setup Iron Router */
+    Router.onRun(function() {
+
+      /** Build properties to pass along with page */
+      let properties = {};
+      let keys = _.keys(this.params);
+      _.each(keys, (key) => { properties[key] = this.params[key]; });
+
+      /** Get the page name */
       let pageName = this.route.getName() || "Home";
-      analytics.page(pageName);
-      this.next();
+
+      /** Send the page with route params */
+      analytics.page(pageName, properties);
+      this.next();''
     });
   } else if (typeof FlowRouter !== "undefined") {
+    /** Setup Flow Router */
     FlowRouter.middleware(function(path, next) {
       let pageName = path !== "/" ? path : "Home";
       analytics.page(pageName);

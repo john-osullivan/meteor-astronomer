@@ -56,12 +56,26 @@ function setupIdentify() {
  */
 function setupRouteTracking() {
   if (typeof Router !== "undefined") {
-    Router.onBeforeAction(function () {
+    /** Setup Iron Router */
+    Router.onRun(function () {
+      var _this = this;
+
+      /** Build properties to pass along with page */
+      var properties = {};
+      var keys = _.keys(this.params);
+      _.each(keys, function (key) {
+        properties[key] = _this.params[key];
+      });
+
+      /** Get the page name */
       var pageName = this.route.getName() || "Home";
-      analytics.page(pageName);
-      this.next();
+
+      /** Send the page with route params */
+      analytics.page(pageName, properties);
+      this.next();"";
     });
   } else if (typeof FlowRouter !== "undefined") {
+    /** Setup Flow Router */
     FlowRouter.middleware(function (path, next) {
       var pageName = path !== "/" ? path : "Home";
       analytics.page(pageName);
