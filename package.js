@@ -2,7 +2,7 @@ Package.describe({
   name: 'astronomer',
   version: '0.0.1',
   summary: 'Easily push analytics events to astronomer.',
-  git: 'https://github.com/usercycle/meteor-astronomer',
+  git: 'https://github.com/astronomerio/meteor-astronomer',
   documentation: 'README.md'
 });
 
