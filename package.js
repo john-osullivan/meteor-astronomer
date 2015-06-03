@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'astronomer',
+  name: 'astronomerio:core',
   version: '0.0.1',
   summary: 'Easily push analytics events to astronomer.',
   git: 'https://github.com/astronomerio/meteor-astronomer',
@@ -7,7 +7,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.1.0.2');
+  api.versionsFrom('1.0');
   api.use('underscore');
   api.addFiles('lib/analytics.min.js', 'client');
   api.addFiles('dist/astronomer.js', 'client');
