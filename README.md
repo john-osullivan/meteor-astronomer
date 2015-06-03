@@ -1,4 +1,4 @@
-# Astronomer.io
+# astronomerio:core meteor package
 
 This package automatically sends events from your Meteor app (route hits and Meteor.method calls) to Astronomer. 
 
