@@ -3,6 +3,21 @@
 "use strict";
 
 /**
+ * If astronomer integration is ready, call directly, else queue.
+ * The integration will replay them when ready.
+ */
+function callOrQueue(method, ...args) {
+    let astronomerReady =
+        ((analytics._integrations || {}).astronomer || {})._ready;
+
+    if (astronomerReady) {
+        analytics[method].apply(analytics, args);
+    } else {
+        window._astq.push([method].concat(args));
+    }
+}
+
+/**
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
  */
 function setupIdentify() {
@@ -28,13 +43,13 @@ function createProperties(obj={}) {
 function setupRouteTracking() {
 
     function page(pageName, properties={}) {
-        analytics.page(pageName, createProperties(properties));
+        // analytics.page(pageName, createProperties(properties));
+        callOrQueue("page", pageName, createProperties(properties));
     }
 
     if (typeof Router !== "undefined") {
         /** Setup Iron Router */
         Router.onRun(function() {
-
             /** Build properties to pass along with page */
             let routeParams = {};
             let keys = _.keys(this.params);
@@ -78,7 +93,8 @@ function setupMethodTracking() {
             let track = function(err, res) {
                 if (!err) {
                     let properties = createProperties({ args, res });
-                    analytics.track(`Called ${name} Method`, properties);
+                    // analytics.track(`Called ${name} Method`, properties);
+                    callOrQueue("track", `Called ${name} Method`, properties);
                 }
             };
 
@@ -108,12 +124,25 @@ Meteor.startup(() => {
     let appId = (settings.astronomer || {}).appId;
     let appSecret = (settings.astronomer || {}).appSecret;
     if (appId && appSecret) {
+
+        // Setup our hooks into meteor
+        if (typeof Meteor.user !== "undefined") {
+            setupIdentify();
+        } else {
+            console.warn("Meteor accounts not detected, all events will be anonymous.");
+        }
+        setupRouteTracking();
+        setupMethodTracking();
+
         let home = DDP.connect("http://localhost:4000");
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
+
+            // If the app does not exist in our system, log it and return.
             if (err) {
                 return console.error(err.reason);
             }
 
+            // Otherwise init analaytics.js with credentials.
             let params = {
                 appId: appId,
                 identityId: res.credentials.IdentityId,
@@ -123,14 +152,6 @@ Meteor.startup(() => {
             };
 
             analytics.initialize({ "astronomer": params });
-
-            if (typeof Meteor.user !== "undefined") {
-                setupIdentify();
-            } else {
-                console.warn("Meteor accounts not detected, all events will be anonymous.");
-            }
-            setupRouteTracking();
-            setupMethodTracking();
         });
     } else {
         console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
