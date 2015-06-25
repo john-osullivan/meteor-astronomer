@@ -132,14 +132,14 @@ Meteor.startup(() => {
         setupRouteTracking();
         setupMethodTracking();
 
-        console.log(`Astronomer: auth with ${credentialServer}`);
+        console.log(`Authenticating with ${credentialServer}`);
         let home = DDP.connect(credentialServer);
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
 
             // If the app does not exist in our system or can't connect,
             // log it and return.
             if (err) {
-                return console.error(err.reason);
+                return console.warn(err.reason);
             }
 
             // Otherwise init analaytics.js with credentials.
