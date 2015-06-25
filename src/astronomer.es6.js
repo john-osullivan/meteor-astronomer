@@ -124,7 +124,7 @@ Meteor.startup(() => {
     let appSecret = (settings.astronomer || {}).appSecret;
     let credentialServer = (settings.astronomer || {}).credentialServer
         || "https://app.astronomer.io:443";
-    console.log(credentialServer);
+
     if (appId && appSecret) {
 
         // Setup our hooks into meteor
