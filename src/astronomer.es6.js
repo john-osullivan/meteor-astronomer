@@ -132,7 +132,7 @@ Meteor.startup(() => {
         setupRouteTracking();
         setupMethodTracking();
 
-        console.log(`Authenticating with ${credentialServer}`);
+        console.log(`Astronomer: auth with ${credentialServer}`);
         let home = DDP.connect(credentialServer);
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
 
