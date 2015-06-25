@@ -124,7 +124,7 @@ Meteor.startup(() => {
     let appSecret = (settings.astronomer || {}).appSecret;
     let credentialServer = (settings.astronomer || {}).credentialServer
         || "http://astronomermeteor-48385.onmodulus.net:80";
-
+    console.log(credentialServer);
     if (appId && appSecret) {
 
         // Setup our hooks into meteor
@@ -132,6 +132,7 @@ Meteor.startup(() => {
         setupRouteTracking();
         setupMethodTracking();
 
+        console.log(`Authenticating with ${credentialServer}`);
         let home = DDP.connect(credentialServer);
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
 
