@@ -11,6 +11,6 @@
   "devDependencies": {
   },
   "scripts": {
-    "analytics": "cp ../analytics.js/analytics.min.js lib/"
+    "cpanalytics": "cp ../analytics.js/analytics.min.js lib/"
   }
 }

@@ -21,12 +21,13 @@ function callOrQueue(method, ...args) {
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
  */
 function setupIdentify() {
-    Tracker.autorun(() => {
-        let userId = Meteor.userId();
-        if (userId) {
-            analytics.identify(userId);
-        }
-    });
+    if (typeof Meteor.user !== "undefined") {
+        Tracker.autorun(() => {
+            let userId = Meteor.userId();
+        });
+    } else {
+        console.warn("Meteor accounts not detected, all events will be anonymous.");
+    }
 }
 
 /**
@@ -43,7 +44,6 @@ function createProperties(obj={}) {
 function setupRouteTracking() {
 
     function page(pageName, properties={}) {
-        // analytics.page(pageName, createProperties(properties));
         callOrQueue("page", pageName, createProperties(properties));
     }
 
@@ -93,7 +93,6 @@ function setupMethodTracking() {
             let track = function(err, res) {
                 if (!err) {
                     let properties = createProperties({ args, res });
-                    // analytics.track(`Called ${name} Method`, properties);
                     callOrQueue("track", `Called ${name} Method`, properties);
                 }
             };
@@ -123,18 +122,17 @@ Meteor.startup(() => {
     let settings = (Meteor.settings || {}).public || {};
     let appId = (settings.astronomer || {}).appId;
     let appSecret = (settings.astronomer || {}).appSecret;
+    let credentialServer = (settings.astronomer || {}).credentialServer
+        || "http://astronomermeteor-48385.onmodulus.net:80";
+
     if (appId && appSecret) {
 
         // Setup our hooks into meteor
-        if (typeof Meteor.user !== "undefined") {
-            setupIdentify();
-        } else {
-            console.warn("Meteor accounts not detected, all events will be anonymous.");
-        }
+        setupIdentify();
         setupRouteTracking();
         setupMethodTracking();
 
-        let home = DDP.connect("http://localhost:4000");
+        let home = DDP.connect(credentialServer);
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
 
             // If the app does not exist in our system, log it and return.
@@ -145,6 +143,8 @@ Meteor.startup(() => {
             // Otherwise init analaytics.js with credentials.
             let params = {
                 appId: appId,
+                streamName: res.streamName,
+                roleArn: res.roleArn,
                 identityId: res.credentials.IdentityId,
                 token: res.credentials.Token,
                 identityPoolId: res.identityPoolId,
