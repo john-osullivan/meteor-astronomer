@@ -135,7 +135,8 @@ Meteor.startup(() => {
         let home = DDP.connect(credentialServer);
         home.call("/applications/credentials", appId, appSecret, (err, res) => {
 
-            // If the app does not exist in our system, log it and return.
+            // If the app does not exist in our system or can't connect,
+            // log it and return.
             if (err) {
                 return console.error(err.reason);
             }
