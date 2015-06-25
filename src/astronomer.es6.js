@@ -123,7 +123,7 @@ Meteor.startup(() => {
     let appId = (settings.astronomer || {}).appId;
     let appSecret = (settings.astronomer || {}).appSecret;
     let credentialServer = (settings.astronomer || {}).credentialServer
-        || "http://astronomermeteor-48385.onmodulus.net:80";
+        || "https://app.astronomer.io:443";
     console.log(credentialServer);
     if (appId && appSecret) {
 
