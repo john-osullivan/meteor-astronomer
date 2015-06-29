@@ -12,8 +12,7 @@ We'd love to have you kick the tires!
   "public": {
     "astronomer": {
       "appId": "XXXXXXXXXXXXXXXXXXX",
-      "appSecret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-      "credentialServer": "http://localhost:4000" // optional, use for testing
+      "appSecret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
   }
 }
