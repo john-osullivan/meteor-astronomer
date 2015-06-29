@@ -2,18 +2,19 @@
 
 This package automatically sends events from your Meteor app (route hits and Meteor.method calls) to Astronomer. 
 
-It's under active development, not ready for prime-time yet. Email ry@rywalker.com if you'd like to apply to participate in our closed alpha, which should begin late June.
+It's under active development. We just [launched our alpha test phase](http://docs.astronomer.io/#alpha-test-process).
+
+We'd love to have you kick the tires!
 
 ### Example Meteor.settings
 ```
 {
   "public": {
     "astronomer": {
-      "appId": "WX7aeTkzwTAMXH6km",
-      "appSecret": "ZoZvnZ3GSdVwlYdKqyJQklV830P23ZoiPnNYxW30X8h",
+      "appId": "XXXXXXXXXXXXXXXXXXX",
+      "appSecret": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
       "credentialServer": "http://localhost:4000" // optional, use for testing
     }
   }
 }
-
 ```
