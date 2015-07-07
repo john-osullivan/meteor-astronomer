@@ -24,6 +24,7 @@ function setupIdentify() {
     if (typeof Meteor.user !== "undefined") {
         Tracker.autorun(() => {
             let userId = Meteor.userId();
+            callOrQueue("identify", userId);
         });
     } else {
         console.warn("Meteor accounts not detected, all events will be anonymous.");
@@ -159,4 +160,3 @@ Meteor.startup(() => {
         console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
     }
 });
-
