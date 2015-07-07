@@ -1,3 +1,5 @@
+/* eslint strict:0 */
+
 Package.describe({
     name: "astronomerio:core",
     version: "0.0.8",
