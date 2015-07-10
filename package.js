@@ -14,7 +14,7 @@ Package.onUse(function(api) {
         "underscore",
         "ddp"
     ]);
-    api.addFiles("lib/analytics.js", "client");
+    api.addFiles("lib/analytics.js/analytics.js", "client");
     api.addFiles("dist/astronomer.js", "client");
 });
 

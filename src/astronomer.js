@@ -65,15 +65,16 @@ function setupRouteTracking() {
         });
     } else if (typeof FlowRouter !== "undefined") {
         /** Setup Flow Router */
-        FlowRouter.middleware(function(path, next) {
+        FlowRouter.triggers.enter([function(context) {
+            /** Build properties to pass along with page */
+            let routeParams = context.params;
 
             /** Get the page name */
-            let pageName = path !== "/" ? path : "Home";
+            let pageName = context.path !== "/" ? context.path : "Home";
 
             /** Send the page view with properties */
-            page(pageName);
-            next();
-        });
+            page(pageName, { routeParams });
+        }]);
     }
 }
 
