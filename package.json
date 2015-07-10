@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cpanalytics": "cp ../analytics.js/analytics.* lib/"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
   },
-  "scripts": {
-    "cpanalytics": "cp ../analytics.js/analytics.min.js lib/"
+  "devDependencies": {
+      "del": "^1.2.0",
+      "gulp": "^3.9.0",
+      "gulp-babel": "^5.1.0",
+      "gulp-plumber": "^1.0.1"
   }
 }
