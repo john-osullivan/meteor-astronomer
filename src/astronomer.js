@@ -57,7 +57,7 @@ function setupRouteTracking() {
             _.each(keys, (key) => { routeParams[key] = this.params[key]; });
 
             /** Get the page name */
-            let pageName = this.route.getName() || "Home";
+            let pageName = this.route._path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams });
@@ -70,7 +70,7 @@ function setupRouteTracking() {
             let routeParams = context.params;
 
             /** Get the page name */
-            let pageName = context.path !== "/" ? context.path : "Home";
+            let pageName = context.route.path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams });

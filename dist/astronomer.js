@@ -68,7 +68,7 @@ function setupRouteTracking() {
             });
 
             /** Get the page name */
-            var pageName = this.route.getName() || "Home";
+            var pageName = this.route._path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams: routeParams });
@@ -81,7 +81,7 @@ function setupRouteTracking() {
             var routeParams = context.params;
 
             /** Get the page name */
-            var pageName = context.path !== "/" ? context.path : "Home";
+            var pageName = context.route.path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams: routeParams });
