@@ -117,46 +117,20 @@ function setupMethodTracking() {
 /*
  * When meteor starts, attempt to initialize analytics.js integration
  * and setup automatic tracking.
- * @todo Clean this up, use promises or something.
- * @todo Change to production url.
  */
 Meteor.startup(() => {
     let settings = (Meteor.settings || {}).public || {};
     let appId = (settings.astronomer || {}).appId;
-    let appSecret = (settings.astronomer || {}).appSecret;
-    let credentialServer = (settings.astronomer || {}).credentialServer
-        || "https://app.astronomer.io:443";
+    let credentialServer = (settings.astronomer || {}).credentialServer;
 
-    if (appId && appSecret) {
-
+    if (appId) {
         // Setup our hooks into meteor
         setupIdentify();
         setupRouteTracking();
         setupMethodTracking();
 
         console.log(`Authenticating with ${credentialServer}`);
-        let home = DDP.connect(credentialServer);
-        home.call("/applications/credentials", appId, appSecret, (err, res) => {
-
-            // If the app does not exist in our system or can't connect,
-            // log it and return.
-            if (err) {
-                return console.warn(err.reason);
-            }
-
-            // Otherwise init analaytics.js with credentials.
-            let params = {
-                appId: appId,
-                streamName: res.streamName,
-                roleArn: res.roleArn,
-                identityId: res.credentials.IdentityId,
-                token: res.credentials.Token,
-                identityPoolId: res.identityPoolId,
-                region: "us-east-1"
-            };
-
-            analytics.initialize({ "astronomer": params });
-        });
+        analytics.initialize({ "astronomer": { appId, credentialServer } });
     } else {
         console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
     }
