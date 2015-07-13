@@ -1,4 +1,4 @@
-/* global FlowRouter, Router, analytics */
+/* global AstronomerConfig, FlowRouter, Router, analytics */
 
 "use strict";
 
@@ -130,9 +130,10 @@ function setupMethodTracking() {
  * and setup automatic tracking.
  */
 Meteor.startup(function () {
-    var settings = (Meteor.settings || {})["public"] || {};
-    var appId = (settings.astronomer || {}).appId;
-    var credentialServer = (settings.astronomer || {}).credentialServer;
+    var settings = window.AstronomerConfig || (((Meteor.settings || {})["public"] || {}).astronomer || {});
+
+    var appId = settings.appId;
+    var credentialServer = settings.credentialServer;
 
     if (appId) {
         // Setup our hooks into meteor
