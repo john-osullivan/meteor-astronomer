@@ -132,17 +132,12 @@ function setupMethodTracking() {
 Meteor.startup(function () {
     var settings = window.AstronomerConfig || (((Meteor.settings || {})["public"] || {}).astronomer || {});
 
-    var appId = settings.appId;
-    var credentialServer = settings.credentialServer;
-
-    if (appId) {
+    if (settings.appId) {
         // Setup our hooks into meteor
         setupIdentify();
         setupRouteTracking();
         setupMethodTracking();
-
-        console.log("Authenticating with " + credentialServer);
-        analytics.initialize({ "astronomer": { appId: appId, credentialServer: credentialServer } });
+        analytics.initialize({ "astronomer": settings });
     } else {
         console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
     }

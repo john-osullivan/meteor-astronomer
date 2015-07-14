@@ -122,17 +122,12 @@ Meteor.startup(() => {
     let settings = window.AstronomerConfig
         || (((Meteor.settings || {}).public || {}).astronomer || {});
 
-    let appId = settings.appId;
-    let credentialServer = settings.credentialServer;
-
-    if (appId) {
+    if (settings.appId) {
         // Setup our hooks into meteor
         setupIdentify();
         setupRouteTracking();
         setupMethodTracking();
-
-        console.log(`Authenticating with ${credentialServer}`);
-        analytics.initialize({ "astronomer": { appId, credentialServer } });
+        analytics.initialize({ "astronomer": settings });
     } else {
         console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
     }
