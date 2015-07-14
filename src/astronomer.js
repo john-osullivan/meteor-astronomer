@@ -1,4 +1,4 @@
-/* global AstronomerConfig, FlowRouter, Router, analytics */
+/* global FlowRouter, Router, analytics */
 
 "use strict";
 
