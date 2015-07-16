@@ -36,7 +36,7 @@ function setupIdentify() {
  * @returns {Object} The new properties object.
  */
 function createProperties(obj={}) {
-    return _.extend(obj, { session: Session.keys });
+    return _.extend(obj, { meteorSession: Session.keys });
 }
 
 /**

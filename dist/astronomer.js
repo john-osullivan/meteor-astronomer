@@ -41,7 +41,7 @@ function setupIdentify() {
 function createProperties() {
     var obj = arguments[0] === undefined ? {} : arguments[0];
 
-    return _.extend(obj, { session: Session.keys });
+    return _.extend(obj, { meteorSession: Session.keys });
 }
 
 /**
