@@ -94,7 +94,10 @@ function setupMethodTracking() {
 
             let track = function(err, res) {
                 if (!err) {
-                    let properties = createProperties({ args, res });
+                    let properties = createProperties({
+                        methodArgs: args,
+                        methodResponse: res
+                    });
                     callOrQueue("track", `Called ${name} Method`, properties);
                 }
             };
