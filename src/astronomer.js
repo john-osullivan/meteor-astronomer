@@ -23,8 +23,15 @@ function callOrQueue(method, ...args) {
 function setupIdentify() {
     if (typeof Meteor.user !== "undefined") {
         Tracker.autorun(() => {
-            let userId = Meteor.userId();
-            callOrQueue("identify", userId);
+            let user = Meteor.user();
+            let traits = {};
+
+            let email = ((user.emails || [])[0] || {}).address;
+            if (email) {
+                traits.email = email;
+            }
+
+            callOrQueue("identify", user._id, traits);
         });
     } else {
         console.warn("Meteor accounts not detected, all events will be anonymous.");
