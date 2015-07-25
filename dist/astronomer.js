@@ -42,16 +42,6 @@ function setupIdentify() {
 }
 
 /**
- * Take a source object and extend it with session keys.
- * @returns {Object} The new properties object.
- */
-function createProperties() {
-    var obj = arguments[0] === undefined ? {} : arguments[0];
-
-    return _.extend(obj, { meteorSession: Session.keys });
-}
-
-/**
  * Detect the router and hook in to run analytics.page.
  */
 function setupRouteTracking() {
@@ -59,7 +49,7 @@ function setupRouteTracking() {
     function page(pageName) {
         var properties = arguments[1] === undefined ? {} : arguments[1];
 
-        callOrQueue("page", pageName, createProperties(properties));
+        callOrQueue("page", pageName, properties);
     }
 
     if (typeof Router !== "undefined") {
@@ -113,11 +103,7 @@ function setupMethodTracking() {
 
         var track = function track(err, res) {
             if (!err) {
-                var properties = createProperties({
-                    methodArgs: args,
-                    methodResponse: res
-                });
-                callOrQueue("track", "Called " + name + " Method", properties);
+                callOrQueue("track", "Called " + name + " Method", {});
             }
         };
 
