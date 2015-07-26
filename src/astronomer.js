@@ -23,7 +23,7 @@ function callOrQueue(method, ...args) {
 function setupIdentify() {
     if (typeof Meteor.user !== "undefined") {
         Tracker.autorun(() => {
-            let user = Meteor.user();
+            let user = Meteor.user() || {};
             let traits = {};
 
             let email = ((user.emails || [])[0] || {}).address;
