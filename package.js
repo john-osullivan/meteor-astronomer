@@ -11,8 +11,7 @@ Package.describe({
 Package.onUse(function(api) {
     api.versionsFrom("1.0");
     api.use([
-        "underscore",
-        "ddp"
+        "underscore"
     ]);
     api.addFiles("lib/analytics.js/analytics.js", "client");
     api.addFiles("dist/astronomer.js", "client");

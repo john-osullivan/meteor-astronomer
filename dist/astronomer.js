@@ -3,38 +3,21 @@
 "use strict";
 
 /**
- * If astronomer integration is ready, call directly, else queue.
- * The integration will replay them when ready.
- */
-function callOrQueue(method) {
-    var astronomerReady = ((analytics._integrations || {}).astronomer || {})._ready;
-
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-    }
-
-    if (astronomerReady) {
-        analytics[method].apply(analytics, args);
-    } else {
-        window._astq.push([method].concat(args));
-    }
-}
-
-/**
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
  */
 function setupIdentify() {
-    if (typeof Meteor.user !== "undefined") {
+    if (Package["accounts-base"]) {
         Tracker.autorun(function () {
             var user = Meteor.user() || {};
             var traits = {};
 
+            /** TODO: incude facebook/google/twitter/etc emails */
             var email = ((user.emails || [])[0] || {}).address;
             if (email) {
                 traits.email = email;
             }
 
-            callOrQueue("identify", user._id, traits);
+            analytics.identify(user._id, traits);
         });
     } else {
         console.warn("Meteor accounts not detected, all events will be anonymous.");
@@ -49,10 +32,10 @@ function setupRouteTracking() {
     function page(pageName) {
         var properties = arguments[1] === undefined ? {} : arguments[1];
 
-        callOrQueue("page", pageName, properties);
+        analytics.page(pageName, properties);
     }
 
-    if (typeof Router !== "undefined") {
+    if (Package["iron:router"]) {
         /** Setup Iron Router */
         Router.onRun(function () {
             var _this = this;
@@ -69,9 +52,13 @@ function setupRouteTracking() {
 
             /** Send the page view with properties */
             page(pageName, { routeParams: routeParams });
-            this.next();
+
+            /** Older versions if IR do not have a next function. */
+            if (typeof this.next === "function") {
+                this.next();
+            }
         });
-    } else if (typeof FlowRouter !== "undefined") {
+    } else if (Package["meteorhacks:flow-router"]) {
         /** Setup Flow Router */
         FlowRouter.triggers.enter([function (context) {
             /** Build properties to pass along with page */
@@ -103,7 +90,7 @@ function setupMethodTracking() {
 
         var track = function track(err, res) {
             if (!err) {
-                callOrQueue("track", "Called " + name + " Method", {});
+                analytics.track("Called " + name + " Method", {});
             }
         };
 
@@ -135,6 +122,6 @@ Meteor.startup(function () {
         setupMethodTracking();
         analytics.initialize({ "astronomer": settings });
     } else {
-        console.warn("Astronomer keys not found in Meteor.settings, skipping setup.");
+        console.warn("Astronomer settings not found in Meteor.settings, skipping setup.");
     }
 });
