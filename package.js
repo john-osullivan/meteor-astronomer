@@ -15,6 +15,8 @@ Package.onUse(function(api) {
     ]);
     api.addFiles("lib/analytics.js/analytics.js", "client");
     api.addFiles("dist/astronomer.js", "client");
+    api.use("iron:router@1.0.7", "client", { weak: true });
+    api.use("meteorhacks:flow-router@1.17.2", "client", { weak: true });
 });
 
 Package.onTest(function(api) {

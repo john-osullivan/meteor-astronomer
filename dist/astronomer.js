@@ -3,6 +3,41 @@
 "use strict";
 
 /**
+ * Attempt to find an email for the current user.
+ */
+function emailAddress(user) {
+    var accountsEmail = ((user.emails || [])[0] || {}).address;
+    if (accountsEmail) return accountsEmail;
+
+    var services = ["facebook", "github", "google", "twitter"];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+        for (var _iterator = services[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var service = _step.value;
+
+            var serviceEmail = ((user.services || {})[service] || {}).email;
+            if (serviceEmail) return serviceEmail;
+        }
+    } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+    } finally {
+        try {
+            if (!_iteratorNormalCompletion && _iterator["return"]) {
+                _iterator["return"]();
+            }
+        } finally {
+            if (_didIteratorError) {
+                throw _iteratorError;
+            }
+        }
+    }
+};
+
+/**
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
  */
 function setupIdentify() {
@@ -10,13 +45,10 @@ function setupIdentify() {
         Tracker.autorun(function () {
             var user = Meteor.user() || {};
             var traits = {};
-
-            /** TODO: incude facebook/google/twitter/etc emails */
-            var email = ((user.emails || [])[0] || {}).address;
+            var email = emailAddress(user);
             if (email) {
                 traits.email = email;
             }
-
             analytics.identify(user._id, traits);
         });
     } else {
@@ -108,20 +140,26 @@ function setupMethodTracking() {
     });
 }
 
-/*
- * When meteor starts, attempt to initialize analytics.js integration
- * and setup automatic tracking.
+/**
+ * Look for configuration and bootstrap auto tracking.
  */
-Meteor.startup(function () {
+function initialize() {
     var settings = window.AstronomerConfig || (((Meteor.settings || {})["public"] || {}).astronomer || {});
 
     if (settings.appId) {
+        // Initialize analytics.js, with astronomer integration.
+        analytics.initialize({ "astronomer": settings });
         // Setup our hooks into meteor
         setupIdentify();
         setupRouteTracking();
         setupMethodTracking();
-        analytics.initialize({ "astronomer": settings });
     } else {
         console.warn("Astronomer settings not found in Meteor.settings, skipping setup.");
     }
-});
+}
+
+/*
+ * When meteor starts, attempt to initialize analytics.js integration
+ * and setup automatic tracking.
+ */
+Meteor.startup(initialize);
