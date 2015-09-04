@@ -124,9 +124,9 @@ function initialize() {
         // Initialize analytics.js, with astronomer integration.
         analytics.initialize({ "astronomer": settings });
         // Setup our hooks into meteor
-        setupIdentify();
-        setupRouteTracking();
-        setupMethodTracking();
+        if (!settings.disableUserTracking) setupIdentify();
+        if (!settings.disableRouteTracking) setupRouteTracking();
+        if (!settings.disableMethodTracking) setupMethodTracking();
     } else {
         console.warn("Astronomer settings not found in Meteor.settings, skipping setup.");
     }
