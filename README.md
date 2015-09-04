@@ -11,7 +11,10 @@ We'd love to have you kick the tires!
 {
   "public": {
     "astronomer": {
-      "appId": "XXXXXXXXXXXXXXXXXXX"
+      "appId": "XXXXXXXXXXXXXXXXXXX", // required
+      "disableUserTracking": true, // optional
+      "disableRouteTracking": true, // optional
+      "disableMethodTracking": true // optional
     }
   }
 }
