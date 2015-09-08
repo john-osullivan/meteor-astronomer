@@ -34,7 +34,6 @@ function setupIdentify() {
             let user = AstronomerUser.findOne() || {};
             let traits = {};
             let email = emailAddress(user);
-            console.log(email);
             if (email) {
                 traits.email = email;
             }
