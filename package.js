@@ -11,13 +11,15 @@ Package.describe({
 Package.onUse(function(api) {
     api.versionsFrom("1.0");
     api.use([
-        "underscore"
+        "underscore",
+        "mongo"
     ]);
     api.addFiles("lib/analytics.js/analytics.js", "client");
     api.addFiles("dist/tracking.js", "client");
     api.addFiles("dist/browser-policy.js", "server");
     api.addFiles("dist/publications.js", "server");
 
+    api.use(["accounts-base", "accounts-oauth"], { weak: true });
     api.use("iron:router@1.0.7", "client", { weak: true });
     api.use("meteorhacks:flow-router@1.17.2", "client", { weak: true });
     api.use("browser-policy-content", "server", { weak: true });

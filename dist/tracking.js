@@ -3,19 +3,28 @@
 "use strict";
 
 /**
+ * Define a client side collection.
+ * Null publication will send the users document down to this collection,
+ * to prevent clashing.  DDP can only work with top level fields,
+ * and we are publishing nested service emails.
+ */
+var AstronomerUser = new Mongo.Collection("AstronomerUser");
+
+/**
  * Attempt to find an email for the current user.
  */
 function emailAddress(user) {
     var accountsEmail = ((user.emails || [])[0] || {}).address;
     if (accountsEmail) return accountsEmail;
 
-    var services = ["facebook", "github", "google", "twitter"];
+    if (!Package["accounts-oauth"]) return;
+
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
 
     try {
-        for (var _iterator = services[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (var _iterator = Accounts.oauth.serviceNames()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var service = _step.value;
 
             var serviceEmail = ((user.services || {})[service] || {}).email;
@@ -43,9 +52,10 @@ function emailAddress(user) {
 function setupIdentify() {
     if (Package["accounts-base"]) {
         Tracker.autorun(function () {
-            var user = Meteor.user() || {};
+            var user = AstronomerUser.findOne() || {};
             var traits = {};
             var email = emailAddress(user);
+            console.log(email);
             if (email) {
                 traits.email = email;
             }
@@ -136,7 +146,7 @@ function setupMethodTracking() {
         }
 
         func = _.bind(func, this);
-        func(name, args, options, callback);
+        return func(name, args, options, callback);
     });
 }
 

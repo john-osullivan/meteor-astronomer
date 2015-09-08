@@ -3,14 +3,23 @@
 "use strict";
 
 /**
+ * Define a client side collection.
+ * Null publication will send the users document down to this collection,
+ * to prevent clashing.  DDP can only work with top level fields,
+ * and we are publishing nested service emails.
+ */
+let AstronomerUser = new Mongo.Collection("AstronomerUser");
+
+/**
  * Attempt to find an email for the current user.
  */
 function emailAddress(user) {
     let accountsEmail = ((user.emails || [])[0] || {}).address;
     if (accountsEmail) return accountsEmail;
 
-    let services = ["facebook", "github", "google", "twitter"];
-    for (let service of services) {
+    if (!Package["accounts-oauth"]) return;
+
+    for (let service of Accounts.oauth.serviceNames()) {
         let serviceEmail = ((user.services || {})[service] || {}).email;
         if (serviceEmail) return serviceEmail;
     }
@@ -22,9 +31,10 @@ function emailAddress(user) {
 function setupIdentify() {
     if (Package["accounts-base"]) {
         Tracker.autorun(() => {
-            let user = Meteor.user() || {};
+            let user = AstronomerUser.findOne() || {};
             let traits = {};
             let email = emailAddress(user);
+            console.log(email);
             if (email) {
                 traits.email = email;
             }
@@ -108,7 +118,7 @@ function setupMethodTracking() {
             }
 
             func = _.bind(func, this);
-            func(name, args, options, callback);
+            return func(name, args, options, callback);
         }
     );
 }
