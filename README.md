@@ -36,7 +36,7 @@ Put the App ID into a new file labeled 'settings.json' (if you don't have this f
 }
 ```
 
-<i>*Note: Be sure to restart your Meteor app when you change settings.json file.*</i>
+<i>Note: Be sure to restart your Meteor app when you change settings.json file.</i>
 
 # 4. Activate a broadcast integration
 
@@ -47,6 +47,7 @@ Every integration will require you to set up a separate account with specific ke
 1. Check the web browser's javascript console for your app, make sure you see **"Authenticating with https://app.astronomer.io:443"** to ensure you got the Meteor settings correct.
 2. Take some actions in your app (sign up, change routes).
 3. Click on the 'Live Stream' tab to see what events are being received by Astronomer.
+![](https://www.filepicker.io/api/file/5AtXbBF8SIe6FMD8iLKU)
 4. Go to the integrations that you've activated and check to see that events are being properly received  on their end. 
 
 # 6. Create separate production/dev apps (optional)
