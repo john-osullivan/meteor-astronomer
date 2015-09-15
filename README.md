@@ -1,11 +1,9 @@
 # Meteor Package for [Astronomer](http://astronomer.io)
 
-If you're using Meteor and haven't instrumented your app for **user analytics** yet, you're in luck! Our package will instrument your entire Meteor app automatically. 
-
-We're still in active development, but we'd love to have you kick the tires!
+If you're using Meteor and haven't instrumented your app for **user analytics** yet, you're in luck! Our package will instrument your entire Meteor app automatically. We're still in active development, but we'd love to have you kick the tires!
 
 
-<b>*NOTE: If you are using the package "percolatestudio:segment.io," you will need to remove this before installing Astronomer. This package sets a global 'analytics' object that makes things a bit, uh, wonky.*</b>
+#####*NOTE: If you are using the package "percolatestudio:segment.io," you will need to remove this before installing Astronomer. This package sets a global 'analytics' object that makes things a bit, uh, wonky.*</b>
 
 ###Which user actions get tracked?
 All of them! This is done by tracking all Meteor methods, route changes (flow-router and iron-router), and insertions into minimongo.
