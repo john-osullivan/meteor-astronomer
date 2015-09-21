@@ -14,31 +14,10 @@ Meteor.publish(null, function () {
     // Build fields object.
     var fields = { "emails": 1 };
 
-    if ((Accounts || {}).oauth) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
-
-        try {
-            for (var _iterator = Accounts.oauth.serviceNames()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                var service = _step.value;
-
-                fields["services." + service + ".email"] = 1;
-            }
-        } catch (err) {
-            _didIteratorError = true;
-            _iteratorError = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion && _iterator["return"]) {
-                    _iterator["return"]();
-                }
-            } finally {
-                if (_didIteratorError) {
-                    throw _iteratorError;
-                }
-            }
-        }
+    if (((Package["accounts-base"] || {}).Accounts || {}).oauth) {
+        _.each(Accounts.oauth.serviceNames(), function (service) {
+            fields["services." + service + ".email"] = 1;
+        });
     }
 
     // Find current user and send down email fields.
