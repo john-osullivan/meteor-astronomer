@@ -15,10 +15,9 @@ Meteor.publish(null, function() {
     // Build fields object.
     let fields = { "emails": 1 };
 
-    if (((Package["accounts-base"] || {}).Accounts || {}).oauth) {
-        _.each(Accounts.oauth.serviceNames(), (service) => {
-            fields[`services.${service}.email`] = 1;
-        });
+    if (Package["accounts-oauth"]) {
+        let services = Package["accounts-base"].Accounts.oauth.serviceNames();
+        _.each(services, s => fields[`services.${s}.email`] = 1);
     }
 
     // Find current user and send down email fields.

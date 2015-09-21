@@ -14,9 +14,10 @@ Meteor.publish(null, function () {
     // Build fields object.
     var fields = { "emails": 1 };
 
-    if (((Package["accounts-base"] || {}).Accounts || {}).oauth) {
-        _.each(Accounts.oauth.serviceNames(), function (service) {
-            fields["services." + service + ".email"] = 1;
+    if (Package["accounts-oauth"]) {
+        var services = Package["accounts-base"].Accounts.oauth.serviceNames();
+        _.each(services, function (s) {
+            return fields["services." + s + ".email"] = 1;
         });
     }
 
