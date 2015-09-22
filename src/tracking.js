@@ -19,7 +19,9 @@ function emailAddress(user) {
 
     if (!Package["accounts-oauth"]) return;
 
-    for (let service of Accounts.oauth.serviceNames()) {
+    let services = Package["accounts-base"].Accounts.oauth.serviceNames();
+    for (let i in services) {
+        let service = services[i];
         let serviceEmail = ((user.services || {})[service] || {}).email;
         if (serviceEmail) return serviceEmail;
     }

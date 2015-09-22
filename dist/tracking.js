@@ -19,30 +19,11 @@ function emailAddress(user) {
 
     if (!Package["accounts-oauth"]) return;
 
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-        for (var _iterator = Accounts.oauth.serviceNames()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var service = _step.value;
-
-            var serviceEmail = ((user.services || {})[service] || {}).email;
-            if (serviceEmail) return serviceEmail;
-        }
-    } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-    } finally {
-        try {
-            if (!_iteratorNormalCompletion && _iterator["return"]) {
-                _iterator["return"]();
-            }
-        } finally {
-            if (_didIteratorError) {
-                throw _iteratorError;
-            }
-        }
+    var services = Package["accounts-base"].Accounts.oauth.serviceNames();
+    for (var i in services) {
+        var service = services[i];
+        var serviceEmail = ((user.services || {})[service] || {}).email;
+        if (serviceEmail) return serviceEmail;
     }
 };
 
