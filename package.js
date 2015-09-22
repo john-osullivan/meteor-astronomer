@@ -2,7 +2,7 @@
 
 Package.describe({
     name: "astronomerio:core",
-    version: "0.2.13",
+    version: "0.2.14",
     summary: "Easily push analytics events to astronomer.",
     git: "https://github.com/astronomerio/meteor-astronomer",
     documentation: "README.md"
