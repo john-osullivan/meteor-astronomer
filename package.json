@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "cpanalytics": "cp ../analytics.js/analytics.* lib/analytics.js",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "deploy": "meteor publish"
   },
   "author": "",
   "license": "ISC",
