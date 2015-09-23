@@ -74,7 +74,7 @@ function setupRouteTracking() {
                 this.next();
             }
         });
-    } else if (Package["meteorhacks:flow-router"]) {
+    } else if (Package["meteorhacks:flow-router"] || Package["kadira:flow-router"]) {
         /** Setup Flow Router */
         FlowRouter.triggers.enter([function(context) {
             /** Build properties to pass along with page */
