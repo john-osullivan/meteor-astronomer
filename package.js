@@ -11,10 +11,11 @@ Package.describe({
 Package.onUse(function(api) {
     api.versionsFrom("1.0");
     api.use([
+        "templating",
         "underscore",
         "mongo"
     ]);
-    api.addFiles("lib/analytics.js/analytics.js", "client");
+    api.addFiles("dist/snippet.js", "client");
     api.addFiles("dist/tracking.js", "client");
     api.addFiles("dist/browser-policy.js", "server");
     api.addFiles("dist/publications.js", "server");

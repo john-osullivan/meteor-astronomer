@@ -25,7 +25,7 @@ function emailAddress(user) {
         var serviceEmail = ((user.services || {})[service] || {}).email;
         if (serviceEmail) return serviceEmail;
     }
-};
+}
 
 /**
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
@@ -110,7 +110,7 @@ function setupMethodTracking() {
             options = {};
         }
 
-        var track = function track(err, res) {
+        var track = function track(err) {
             if (!err) {
                 analytics.track("Called " + name + " Method", {});
             }
@@ -138,7 +138,7 @@ function initialize() {
 
     if (settings.appId) {
         // Initialize analytics.js, with astronomer integration.
-        analytics.initialize({ "astronomer": settings });
+        analytics.load(settings.appId);
         // Setup our hooks into meteor
         if (!settings.disableUserTracking) setupIdentify();
         if (!settings.disableRouteTracking) setupRouteTracking();
