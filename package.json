@@ -3,7 +3,6 @@
   "version": "0.2.17",
   "description": "",
   "scripts": {
-    "cpanalytics": "cp ../analytics.js/analytics.* lib/analytics.js",
     "dev": "gulp watch",
     "deploy": "meteor publish"
   },
