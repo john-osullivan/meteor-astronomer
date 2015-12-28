@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     ]);
 
     Npm.depends({
-        "analytics-node": "https://github.com/astronomerio/analytics-node/archive/af30d8e9b9ec4e96ddb852ab6ba5d3aa8eda61da.tar.gz"
+        "analytics-node": "https://github.com/astronomerio/analytics-node/archive/5b3e502b0c5cad1cba883b92625c8bc4af00c148.tar.gz"
     });
 
     api.addFiles("dist/snippet.js", "client");
