@@ -1,6 +1,6 @@
 "use strict";
 
-var Analytics = Npm.require("analytics-node");
+var Analytics = Npm.require("analytics-node-astronomer");
 
 // Grab settings from global object or Meteor.settings.
 var settings = global.AstronomerConfig || (((Meteor.settings || {})["public"] || {}).astronomer || {});

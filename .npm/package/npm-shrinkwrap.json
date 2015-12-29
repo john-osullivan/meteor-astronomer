@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "analytics-node": {
-      "version": "https://github.com/astronomerio/analytics-node/tarball/5b3e502b0c5cad1cba883b92625c8bc4af00c148",
+    "analytics-node-astronomer": {
+      "version": "2.0.1",
       "dependencies": {
         "clone": {
           "version": "0.1.19"

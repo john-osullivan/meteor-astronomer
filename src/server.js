@@ -1,4 +1,4 @@
-const Analytics = Npm.require("analytics-node");
+const Analytics = Npm.require("analytics-node-astronomer");
 
 // Grab settings from global object or Meteor.settings.
 const settings = global.AstronomerConfig
