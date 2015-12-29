@@ -8,17 +8,18 @@ Package.describe({
     documentation: "README.md"
 });
 
+Npm.depends({
+    "analytics-node": "https://github.com/astronomerio/analytics-node/archive/998b2f00ab76b8c969d70f9ee7f3e7c8a111cf12.tar.gz"
+});
+
 Package.onUse(function(api) {
     api.versionsFrom("1.0");
+
     api.use([
         "templating",
         "underscore",
         "mongo"
     ]);
-
-    Npm.depends({
-        "analytics-node-astronomer": "2.0.1"
-    });
 
     api.addFiles("dist/snippet.js", "client");
     api.addFiles("dist/tracking.js", "client");
