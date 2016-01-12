@@ -2,7 +2,7 @@
 
 Package.describe({
     name: "astronomerio:core",
-    version: "0.2.18",
+    version: "0.2.19",
     summary: "Easily push analytics events to astronomer.",
     git: "https://github.com/astronomerio/meteor-astronomer",
     documentation: "README.md"
@@ -30,6 +30,7 @@ Package.onUse(function(api) {
     api.use(["accounts-base", "accounts-oauth"], { weak: true });
     api.use("iron:router@1.0.7", "client", { weak: true });
     api.use("meteorhacks:flow-router@1.17.2", "client", { weak: true });
+    api.use("kadira:flow-router@2.0.0", "client", { weak: true });
     api.use("browser-policy-content", "server", { weak: true });
 
     api.export("analytics", "server");
