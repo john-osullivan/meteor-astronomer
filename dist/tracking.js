@@ -41,8 +41,6 @@ function setupIdentify() {
             var traits = {};
             traits.email = emailAddress(user);
 
-            console.log(id, traits);
-
             analytics.identify(id, traits);
         });
     } else {
