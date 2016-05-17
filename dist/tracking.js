@@ -34,12 +34,16 @@ function setupIdentify() {
     if (Package["accounts-base"]) {
         Tracker.autorun(function () {
             var user = AstronomerUser.findOne() || {};
+
+            var id = user._id;
+            if (!id) return;
+
             var traits = {};
-            var email = emailAddress(user);
-            if (email) {
-                traits.email = email;
-            }
-            analytics.identify(user._id, traits);
+            traits.email = emailAddress(user);
+
+            console.log(id, traits);
+
+            analytics.identify(id, traits);
         });
     } else {
         console.warn("Meteor accounts not detected, all events will be anonymous.");

@@ -33,13 +33,17 @@ function emailAddress(user) {
 function setupIdentify() {
     if (Package["accounts-base"]) {
         Tracker.autorun(() => {
-            let user = AstronomerUser.findOne() || {};
-            let traits = {};
-            let email = emailAddress(user);
-            if (email) {
-                traits.email = email;
-            }
-            analytics.identify(user._id, traits);
+            const user = AstronomerUser.findOne() || {};
+
+            const id = user._id;
+            if (!id) return;
+
+            const traits = {};
+            traits.email = emailAddress(user);
+
+            console.log(id, traits);
+
+            analytics.identify(id, traits);
         });
     } else {
         console.warn("Meteor accounts not detected, all events will be anonymous.");
