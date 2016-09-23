@@ -9,3 +9,7 @@
 ## 0.2.19 (2016-01-12)
 
   - add weak dependency on kadira:flow-router
+
+## 1.0.0 (2016-09-26)
+
+  - Upgrade to Meteor 1.4.x, revise README.md, depend on astronomer npm package

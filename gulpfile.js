@@ -3,11 +3,6 @@ import babel from 'gulp-babel';
 import plumber from 'gulp-plumber';
 import del from 'del';
 
-// var gulp = require("gulp"),
-//     babel = require("gulp-babel"),
-//     plumber = require("gulp-plumber"),
-//     del = require("del");
-
 const settings = {
   src: 'src/**/*.js',
   dist: 'dist'

@@ -1,6 +1,6 @@
 Package.describe({
-    name: 'meteor-astronomer',
-    version: '0.2.20',
+    name: 'astronomerio:core',
+    version: '1.0.0',
     summary: 'Easily push analytics events to Astronomer.',
     git: 'https://github.com/astronomerio/meteor-astronomer',
     documentation: 'README.md'
@@ -9,7 +9,7 @@ Package.describe({
 Npm.depends({'astronomer': '2.0.4'});
 
 Package.onUse(function(api) {
-    api.versionsFrom('1.3.4');
+    api.versionsFrom('1.4.1');
 
     api.use([
         'ecmascript',
@@ -32,6 +32,6 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
     api.use('tinytest');
-    api.use('meteor-astronomer');
+    api.use('astronomerio:core');
     api.addFiles('astronomer-tests.js');
 });

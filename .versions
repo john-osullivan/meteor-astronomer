@@ -1,5 +1,4 @@
 allow-deny@1.0.4
-astronomerio:core@0.2.20
 babel-compiler@6.6.4
 babel-runtime@0.1.8
 base64@1.0.8

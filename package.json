@@ -1,6 +1,6 @@
 {
   "name": "meteor-astronomer",
-  "version": "0.2.20",
+  "version": "1.0.0",
   "description": "",
   "main": "package.js",
   "scripts": {
