@@ -1,4 +1,5 @@
-# Meteor Package for [Astronomer](http://astronomer.io)
+![alt text](astronomer.png "Meteor package for Astronomer")
+# Meteor 1.4.x Package for [Astronomer](http://astronomer.io)
 
 If you're using Meteor and haven't instrumented your app for **user analytics** yet, you're in luck! Our package will instrument your entire Meteor app automatically. We're still in active development, but we'd love to have you kick the tires!
 
