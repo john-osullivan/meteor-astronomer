@@ -1,7 +1,7 @@
+![alt text](astronomer.png "Meteor package for Astronomer")
 # Meteor Package for [Astronomer](http://astronomer.io)
 
-If you're using Meteor and haven't instrumented your app for **user analytics** yet, you're in luck! Our package will instrument your entire Meteor app automatically. We're still in active development, but we'd love to have you kick the tires!
-
+Astronomer's Meteor package is designed to instrument your entire Meteor app for user analytics.  
 
 #####*NOTE: If you are using the package "percolatestudio:segment.io," you will need to remove this before installing Astronomer. This package sets a global 'analytics' object that makes things a bit, uh, wonky.*
 
@@ -14,47 +14,72 @@ Open your terminal, change your directory to your app, and add the Astronomer pa
 
 ```meteor add astronomerio:core```
 
-# 2. Get an appId
+# 2. Create an Astronomer app & Copy your App ID
 
-Get the appId from Astronomer "Settings" tab by clicking the 'Copy to Clipboard' button. 
-<img src="https://www.filepicker.io/api/file/6WLcSszVRBWWpdSgoQ9K">
+Visit [app.astronomer.io](https://app.astronomer.io) to sign up!
 
-# 3.  Configure your app
+![alt text](https://www.filestackapi.com/api/file/PTbZpKfSH7jeMZWthZAA "Sign up")
 
-Put the App ID into a new file labeled 'settings.json' (if you don't have this file already). The final format should look like the below.
+![alt text](https://www.filestackapi.com/api/file/lo2GksIdQiSHAdLItvqb "Sign up")
+
+For those of you using Astronomer for the first time, create your first app!  Current users, hit the "+" symbol at the top right of the screen to create a new app, or use any existing app.
+
+![alt text](https://www.filestackapi.com/api/file/0PA3igf8QZ6NRx6McE4U "Create your first app")
+
+Now that you have an app created, switch over to that app's Settings tab and copy your App ID.
+
+![alt text](https://www.filestackapi.com/api/file/Abtby7LdR4Sy9WxnjABA "Copy your App ID")
+
+# 3.  Configure your Meteor application
+
+1. Copy the snippet below
+2. Create a new file called `settings.json` at the root directory of your Meteor application and paste this snippet inside that file.  If you already have a file named `settings.json`, simply add this snippet to it.
+3. Paste your Astronomer App ID into the second half of the `"appID": "XXXXXXXXXXXXXXXXXXX"` field, replacing the X's.
+4. Restart your Meteor application.
 
 ```
 {
   "public": {
     "astronomer": {
-      "appId": "XXXXXXXXXXXXXXXXXXX", // required
-      "disableUserTracking": true, // optional
-      "disableRouteTracking": true, // optional
-      "disableMethodTracking": true // optional
+      "appId": "XXXXXXXXXXXXXXXXXXX",
+      "disableUserTracking": true,
+      "disableRouteTracking": true,
+      "disableMethodTracking": true
     }
   }
 }
 ```
 
-<i>Note: Be sure to restart your Meteor app when you change settings.json file.</i>
+`disableUserTracking`: `true` or `false`, optional.  This tracks aliased users.  Note: if you don't have [anonymous users aliased inside Meteor](http://docs.meteor.com/api/accounts.html) yet, we recommend doing that so you receive meaningful user information.  
 
-# 4. Activate a broadcast integration
+`disableRouteTracking`: `true` or `false`, optional.  This sends a Page call as routing is engaged within your Meteor App.
 
-Every integration will require you to set up a separate account with specific keys or ids that let Astronomer know which account is yours.
+`disableMethodTracking`: `true` or `false`, optional.  This sends a Track call as methods are engaged within your Meteor App.
 
-# 5. Confirm events are being sent
+# 4. Run your Meteor app & see events!
 
-1. Check the web browser's javascript console for your app, make sure you see **"Authenticating with https://app.astronomer.io:443"** to ensure you got the Meteor settings correct.
-2. Take some actions in your app (sign up, change routes).
-3. Click on the 'Live Stream' tab to see what events are being received by Astronomer.
-![](https://www.filepicker.io/api/file/5AtXbBF8SIe6FMD8iLKU)
-4. Go to the integrations that you've activated and check to see that events are being properly received  on their end. 
+Now that you have a settings.json, you'll have to tell Meteor to run with this configuration.  Either manually run your app by calling `meteor --settings settings.json` or adding that run command to any existing run configuration inside your app's `package.json`.
 
-# 6. Create separate production/dev apps (optional)
+With your Meteor app fired up (local or hosted), switch between pages (routing) and engage known methods inside your application.  You should see corresponding events in your Astronomer app's Live Stream!
 
-You may want to create a separate Astronomer/{Any Integration) instances to keep your test/dev events out of your production data. I use the naming convention “{AppName} Prod” and “{AppName} Dev” across all the services to keep it all straight. Some Integrations do this automatically but for us, you'll need to make a new project to keep everything separate.
+![alt text](https://www.filestackapi.com/api/file/Uc1Yy5h6SmifBLaAGmie "events")
+
+# 5. Customize your analytics tracking with Astronomer
+
+You're not limited to what we have baked in (which is a lot!).  You can track anything triggered inside your Meteor app!  Lets just say you want to trigger a tracked event when a user upvotes your hot new blog post.  Inside your app where that event is captured, simply
+
+```
+analytics.track('Upvoted my hot new blog post', {
+  name: 'Why Captain Kathryn Janeway is the best Star Trek captain EVER!',
+  quantity: 1
+});
+```
+and you'll see that event tracked inside your Live Events.  Boom!
+
+And you know what's even **more awesome**?!  You're ready to configure any of the integrations you see available in our platform (including an integration option to send your Astronomer app's Live Events to Amazon Redshift)!  Be sure to check out [our docs](http://docs.astronomer.io/docs) to get started (each integration has different setup instructions).
+
 
 #7. Share your story with us (not optional!)
 
-Please report any issues, confusing steps, etc. you encounter in the process. Or any feedback of any kind. The fastest way to get a response from us is to join our [developer slack channel](https://astronomerchat.slack.com). Email [ben@astronomer.io](mailto:ben@astronomer.io) for an invite.
+Please reach out with any feedback of any kind through the Astronomer app itself (bottom right icon).  We can't wait to hear from you!
 

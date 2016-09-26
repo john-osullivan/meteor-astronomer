@@ -1,7 +1,8 @@
 {
   "name": "meteor-astronomer",
-  "version": "0.2.20",
+  "version": "1.0.0",
   "description": "",
+  "main": "package.js",
   "scripts": {
     "dev": "gulp watch",
     "deploy": "meteor publish"
@@ -9,11 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "astronomer": "^2.0.4"
   },
   "devDependencies": {
-      "del": "^1.2.0",
-      "gulp": "^3.9.0",
-      "gulp-babel": "^5.1.0",
-      "gulp-plumber": "^1.0.1"
+    "del": "^2.2.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-plumber": "^1.0.1"
   }
 }

@@ -1,28 +1,26 @@
 /* global FlowRouter, Router, analytics */
 
-"use strict";
-
 /**
  * Define a client side collection.
  * Null publication will send the users document down to this collection,
  * to prevent clashing.  DDP can only work with top level fields,
  * and we are publishing nested service emails.
  */
-var AstronomerUser = new Mongo.Collection("AstronomerUser");
+const AstronomerUser = new Mongo.Collection('AstronomerUser');
 
 /**
  * Attempt to find an email for the current user.
  */
 function emailAddress(user) {
-    var accountsEmail = ((user.emails || [])[0] || {}).address;
+    const accountsEmail = ((user.emails || [])[0] || {}).address;
     if (accountsEmail) return accountsEmail;
 
-    if (!Package["accounts-oauth"]) return;
+    if (!Package['accounts-oauth']) return;
 
-    var services = Package["accounts-base"].Accounts.oauth.serviceNames();
-    for (var i in services) {
-        var service = services[i];
-        var serviceEmail = ((user.services || {})[service] || {}).email;
+    const services = Package['accounts-base'].Accounts.oauth.serviceNames();
+    for (let i in services) {
+        let service = services[i];
+        const serviceEmail = ((user.services || {})[service] || {}).email;
         if (serviceEmail) return serviceEmail;
     }
 }
@@ -31,20 +29,20 @@ function emailAddress(user) {
  * Setup an autorun, to identify a user whenever Meteor.userId changes.
  */
 function setupIdentify() {
-    if (Package["accounts-base"]) {
+    if (Package['accounts-base']) {
         Tracker.autorun(function () {
-            var user = AstronomerUser.findOne() || {};
+            const user = AstronomerUser.findOne() || {};
 
-            var id = user._id;
+            const id = user._id;
             if (!id) return;
 
-            var traits = {};
+            const traits = {};
             traits.email = emailAddress(user);
 
             analytics.identify(id, traits);
         });
     } else {
-        console.warn("Meteor accounts not detected, all events will be anonymous.");
+        console.warn('Meteor accounts not detected, all events will be anonymous.');
     }
 }
 
@@ -54,42 +52,42 @@ function setupIdentify() {
 function setupRouteTracking() {
 
     function page(pageName) {
-        var properties = arguments[1] === undefined ? {} : arguments[1];
+        const properties = arguments[1] === undefined ? {} : arguments[1];
 
         analytics.page(pageName, properties);
     }
 
-    if (Package["iron:router"]) {
+    if (Package['iron:router']) {
         /** Setup Iron Router */
         Router.onRun(function () {
-            var _this = this;
+            let _this = this;
 
             /** Build properties to pass along with page */
-            var routeParams = {};
-            var keys = _.keys(this.params);
+            const routeParams = {};
+            const keys = _.keys(this.params);
             _.each(keys, function (key) {
                 routeParams[key] = _this.params[key];
             });
 
             /** Get the page name */
-            var pageName = this.route._path;
+            const pageName = this.route._path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams: routeParams });
 
             /** Older versions if IR do not have a next function. */
-            if (typeof this.next === "function") {
+            if (typeof this.next === 'function') {
                 this.next();
             }
         });
-    } else if (Package["meteorhacks:flow-router"] || Package["kadira:flow-router"]) {
+    } else if (Package['meteorhacks:flow-router'] || Package['kadira:flow-router']) {
         /** Setup Flow Router */
         FlowRouter.triggers.enter([function (context) {
             /** Build properties to pass along with page */
-            var routeParams = context.params;
+            const routeParams = context.params;
 
             /** Get the page name */
-            var pageName = context.route.path;
+            const pageName = context.route.path;
 
             /** Send the page view with properties */
             page(pageName, { routeParams: routeParams });
@@ -107,14 +105,14 @@ function setupMethodTracking() {
     Meteor.connection.apply = _.wrap(Meteor.connection.apply, function (func, name, args, options, callback) {
         if (options === undefined) options = {};
 
-        if (typeof options === "function") {
+        if (typeof options === 'function') {
             callback = options;
             options = {};
         }
 
-        var track = function track(err) {
+        const track = function track(err) {
             if (!err) {
-                analytics.track("Called " + name + " Method", {});
+                analytics.track('Called ' + name + ' Method', {});
             }
         };
 
@@ -136,8 +134,7 @@ function setupMethodTracking() {
  * Look for configuration and bootstrap auto tracking.
  */
 function initialize() {
-    var settings = window.AstronomerConfig || (((Meteor.settings || {})["public"] || {}).astronomer || {});
-
+    const settings = window.AstronomerConfig || (((Meteor.settings || {})['public'] || {}).astronomer || {});
     if (settings.appId) {
         // Initialize analytics.js, with astronomer integration.
         analytics.load(settings.appId);
@@ -146,7 +143,7 @@ function initialize() {
         if (!settings.disableRouteTracking) setupRouteTracking();
         if (!settings.disableMethodTracking) setupMethodTracking();
     } else {
-        console.warn("Astronomer settings not found in Meteor.settings, skipping setup.");
+        console.warn('Astronomer settings not found in Meteor.settings, skipping setup.');
     }
 }
 
