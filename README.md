@@ -79,7 +79,7 @@ and you'll see that event tracked inside your Live Events.  Boom!
 And you know what's even **more awesome**?!  You're ready to configure any of the integrations you see available in our platform (including an integration option to send your Astronomer app's Live Events to Amazon Redshift)!  Be sure to check out [our docs](http://docs.astronomer.io/docs) to get started (each integration has different setup instructions).
 
 
-#7. Share your story with us (not optional!)
+# 6. Share your story with us (not optional!)
 
 Please reach out with any feedback of any kind through the Astronomer app itself (bottom right icon).  We can't wait to hear from you!
 
