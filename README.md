@@ -44,7 +44,8 @@ Now that you have an app created, switch over to that app's Settings tab and cop
       "appId": "XXXXXXXXXXXXXXXXXXX",
       "disableUserTracking": true,
       "disableRouteTracking": true,
-      "disableMethodTracking": true
+      "disableMethodTracking": true,
+      "ignoreNotFoundWarning": false
     }
   }
 }
@@ -55,6 +56,8 @@ Now that you have an app created, switch over to that app's Settings tab and cop
 `disableRouteTracking`: `true` or `false`, optional.  This sends a Page call as routing is engaged within your Meteor App.
 
 `disableMethodTracking`: `true` or `false`, optional.  This sends a Track call as methods are engaged within your Meteor App.
+
+`ignoreNotFoundWarning`: `true` or `false`, optional. This prevents a warning from appearing in the console if there is no `appId`.
 
 # 4. Run your Meteor app & see events!
 

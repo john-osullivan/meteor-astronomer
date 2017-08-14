@@ -14,6 +14,6 @@ for (let t = 0; t < analytics.methods.length; t++) {
 // Assign real analytics if we have an appId.
 if (settings.appId) {
     analytics = new Analytics(settings.appId);
-} else {
+} else if (! settings.ignoreNotFoundWarning) {
     console.warn('Astronomer settings not found in Meteor.settings, skipping setup.');
 }

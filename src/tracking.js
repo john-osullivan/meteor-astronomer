@@ -142,7 +142,7 @@ function initialize() {
         if (!settings.disableUserTracking) setupIdentify();
         if (!settings.disableRouteTracking) setupRouteTracking();
         if (!settings.disableMethodTracking) setupMethodTracking();
-    } else {
+    } else if (! settings.ignoreNotFoundWarning) {
         console.warn('Astronomer settings not found in Meteor.settings, skipping setup.');
     }
 }
