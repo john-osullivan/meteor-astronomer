@@ -30,7 +30,9 @@ function emailAddress(user) {
  */
 function setupIdentify() {
     if (Package['accounts-base']) {
-        Tracker.autorun(function () {
+        const Tracker = require('meteor/tracker').Tracker;
+        if (Tracker) {
+          Tracker.autorun(function () {
             const user = AstronomerUser.findOne() || {};
 
             const id = user._id;
@@ -40,7 +42,11 @@ function setupIdentify() {
             traits.email = emailAddress(user);
 
             analytics.identify(id, traits);
-        });
+          });
+        }
+        else {
+          console.warn('Tracker not detected, User changes cannot be monitored, all events will be anonymous.')
+        }
     } else {
         console.warn('Meteor accounts not detected, all events will be anonymous.');
     }
@@ -59,6 +65,8 @@ function setupRouteTracking() {
 
     if (Package['iron:router']) {
         /** Setup Iron Router */
+        const Router = require('meteor/iron:router').Router;
+
         Router.onRun(function () {
             let _this = this;
 
@@ -82,6 +90,10 @@ function setupRouteTracking() {
         });
     } else if (Package['meteorhacks:flow-router'] || Package['kadira:flow-router']) {
         /** Setup Flow Router */
+        let FlowRouter;
+        if (Package['meteorhacks:flow-router']) FlowRouter = Package['meteorhacks:flow-router'].FlowRouter;
+        if (Package['kadira:flow-router']) FlowRouter = Package['kadira:flow-router'].FlowRouter;
+
         FlowRouter.triggers.enter([function (context) {
             /** Build properties to pass along with page */
             const routeParams = context.params;

@@ -17,11 +17,12 @@ Package.onUse(function(api) {
         'underscore',
         'mongo'
     ]);
-    
+
     api.mainModule('client.js', 'client');
     api.mainModule('server.js', 'server');
 
     api.use(['accounts-base', 'accounts-oauth'], { weak: true });
+    api.use('tracker', 'client', { weak: true });
     api.use('iron:router@1.0.7', 'client', { weak: true });
     api.use('meteorhacks:flow-router@1.17.2', 'client', { weak: true });
     api.use('kadira:flow-router@2.0.0', 'client', { weak: true });
