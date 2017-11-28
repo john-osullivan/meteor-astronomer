@@ -1,3 +1,3 @@
-import './dist/snippet.js';
-import './dist/tracking.js';
+import './src/snippet.js';
+import './src/tracking.js';
 
