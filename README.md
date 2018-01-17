@@ -72,12 +72,14 @@ With your Meteor app fired up (local or hosted), switch between pages (routing) 
 You're not limited to what we have baked in (which is a lot!).  You can track anything triggered inside your Meteor app!  Lets just say you want to trigger a tracked event when a user upvotes your hot new blog post.  Inside your app where that event is captured, simply
 
 ```
-analytics.track('Upvoted my hot new blog post', {
-  name: 'Why Captain Kathryn Janeway is the best Star Trek captain EVER!',
-  quantity: 1
+analytics.track({
+  userId : 'someUserId',
+  event : "Upvoted my new blog post"
+  name : "Why Captain Kathryn Janeway is the best Star Trek captain EVER!',
+  quantity : 1
 });
 ```
-and you'll see that event tracked inside your Live Events.  Boom!
+and you'll see that event tracked inside your Live Events.  Boom!  Find the source [here](https://github.com/astronomerio/analytics-node/blob/master/lib/index.js#L82).
 
 And you know what's even **more awesome**?!  You're ready to configure any of the integrations you see available in our platform (including an integration option to send your Astronomer app's Live Events to Amazon Redshift)!  Be sure to check out [our docs](http://docs.astronomer.io/docs) to get started (each integration has different setup instructions).
 
